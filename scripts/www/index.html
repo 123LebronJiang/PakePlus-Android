@@ -633,9 +633,9 @@ const BDEF={
   refinery:{n:'矿场',   w:3,h:2,cost:1400,hp: 850,pw:-30,ic:'🏭',req:'base',
     tip:'经济命脉：矿车在此卸货把矿石变成资金，建成后会自动配属一台矿车'},
   barracks:{n:'兵营',   w:2,h:2,cost: 500,hp: 520,pw:-20,ic:'🪖',req:'base',
-    tip:'训练步兵：步兵、火箭兵、狙击手、间谍等都出自这里。也是战车工厂的前置'},
+    tip:'训练步兵：步兵、火箭兵、狙击手、间谍等都出自这里。也是战车工厂的前置。同类建筑越多生产越快（收益递减，上限 ×2.2）'},
   factory :{n:'战车工厂',w:3,h:2,cost:1500,hp: 720,pw:-50,ic:'🚜',req:'barracks',
-    tip:'生产装甲与矿车：坦克、自行火炮、攻城坦克、工程车等。也是科技中心的前置'},
+    tip:'生产装甲与矿车：坦克、自行火炮、攻城坦克、工程车等。也是科技中心的前置。多造几座能显著加快出车速度'},
   turret  :{n:'哨戒炮', w:1,h:1,cost: 500,hp: 360,pw:-15,ic:'🗼',req:'barracks',
     tip:'自动攻击 7 格内的敌人（30 伤害）。保护基地与要道的廉价防线，但停电时会哑火'},
   tech    :{n:'科技中心',w:2,h:2,cost:1200,hp: 600,pw:-60,ic:'🔬',req:'factory',
@@ -664,29 +664,31 @@ const BDEF={
   /* 机场：空军的唯一入口。占地大、耗电高，必须战车工厂之后才能建 ——
      空中单位无视地形且普通部队够不着，强度高，所以门槛也要高。 */
   airfield:{n:'机场',   w:3,h:3,cost:1200,hp: 680,pw:-60,ic:'🛩',req:'factory',
-    tip:'生产空中单位：战斗机、轰炸机、武装直升机、空降运输机、空中预警机。也是全军唯一的空军入口'}
+    tip:'生产空中单位：战斗机、轰炸机、武装直升机、空降运输机、空中预警机。也是全军唯一的空军入口。多造能加快出动速度'}
 };
 const UDEF={
   rifle :{n:'步兵',  cost:100 ,hp:100,spd:50,rng:4.5,dmg:14,rate:0.75,arm:'light',rad:7 ,ic:'🪖',from:'barracks',t:4 ,vs:{light:1,heavy:.42,str:.5 },
-    sk:{n:'手雷',ic:'💣',cd:12,rng:6,dmg:75,rad:2.4,k:'grenade',tip:'向目标点投掷手雷，范围爆炸'}},
+    sk:{n:'手雷',ic:'💣',cd:12,rng:4.5,dmg:75,rad:2.4,k:'grenade',tip:'向目标点投掷手雷，范围爆炸'}},
   rocket:{n:'火箭兵',cost:300 ,hp: 95,spd:42,rng:6.0,dmg:46,rate:1.7 ,arm:'light',rad:7 ,ic:'🎯',from:'barracks',t:6 ,vs:{light:.6,heavy:1.35,str:.8},
-    sk:{n:'齐射',ic:'🚀',cd:15,rng:7,dmg:40,rad:1.2,k:'salvo',tip:'三连追踪火箭，单体高伤'}},
+    sk:{n:'齐射',ic:'🚀',cd:15,rng:6,dmg:40,rad:1.2,k:'salvo',tip:'三连追踪火箭，单体高伤'}},
   tank  :{n:'坦克',  cost:800 ,hp:430,spd:66,rng:5.5,dmg:48,rate:1.5 ,arm:'heavy',rad:10,ic:'🛡',from:'factory', t:9 ,vs:{light:.75,heavy:1,str:1},
     sk:{n:'冲锋',ic:'💨',cd:18,rng:0,dmg:90,rad:0,k:'charge',tip:'3 秒加速冲锋，碾压撞到的步兵'}},
   apc   :{n:'装甲车',cost:600 ,hp:340,spd:82,rng:3.2,dmg:18,rate:0.5 ,arm:'heavy',rad:10,ic:'🚐',from:'factory', t:7 ,vs:{light:1.1,heavy:.5,str:.45},
-    sk:{n:'烟幕',ic:'🌫',cd:20,rng:9,dmg:0,rad:3.2,k:'smoke',tip:'投下烟幕，范围内敌人伤害减半'}},
+    /* 烟幕：装甲车普攻 3.2 格，原来能扔到 9 格外 —— 支援技能比主炮还远一倍。
+       收到 6 格（普攻 +3），仍够在冲锋前给前线铺烟。 */
+    sk:{n:'烟幕',ic:'🌫',cd:20,rng:5,dmg:0,rad:3.2,k:'smoke',tip:'投下烟幕，范围内敌人伤害减半'}},
   harv  :{n:'矿车',  cost:1000,hp:540,spd:54,rng:0  ,dmg:0 ,rate:0   ,arm:'heavy',rad:11,ic:'⛏',from:'factory', t:11,
     sk:{n:'急返',ic:'🏃',cd:10,rng:0,dmg:0,rad:0,k:'dash',tip:'立刻高速返回矿场卸货'}},
   /* --- 新增单位 --- */
   sniper:{n:'狙击手',cost:450 ,hp: 70,spd:44,rng:9.5,dmg:95,rate:2.6 ,arm:'light',rad:7 ,ic:'🎯',from:'barracks',t:7 ,
     vs:{light:1.5,heavy:.55,str:.6},
-    sk:{n:'狙杀',ic:'💀',cd:14,rng:11,dmg:260,rad:0,k:'snipe',tip:'锁定一个目标，造成毁灭性单体伤害'}},
+    sk:{n:'狙杀',ic:'💀',cd:14,rng:9.5,dmg:260,rad:0,k:'snipe',tip:'锁定一个目标，造成毁灭性单体伤害'}},
   flamer:{n:'喷火兵',cost:350 ,hp:130,spd:46,rng:3.0,dmg:11,rate:0.35,arm:'light',rad:8 ,ic:'🔥',from:'barracks',t:6 ,
     vs:{light:1.6,heavy:.35,str:.9},aoe:1.5,
-    sk:{n:'烈焰',ic:'🔥',cd:16,rng:4,dmg:34,rad:3.4,k:'flame',tip:'喷出扇形烈焰，灼烧范围内所有敌人'}},
+    sk:{n:'烈焰',ic:'🔥',cd:16,rng:3,dmg:34,rad:3.4,k:'flame',tip:'喷出扇形烈焰，灼烧范围内所有敌人'}},
   art   :{n:'自行火炮',cost:1500,hp:260,spd:40,rng:11 ,dmg:105,rate:3.4,arm:'str',rad:11,ic:'💥',from:'factory', t:12,
     vs:{light:.7,heavy:1.1,str:1.6},aoe:3.0,
-    sk:{n:'齐射',ic:'💥',cd:24,rng:12,dmg:80,rad:3.2,k:'barrage',tip:'连续发射 3 枚范围炮弹'}},
+    sk:{n:'齐射',ic:'💥',cd:24,rng:11,dmg:80,rad:3.2,k:'barrage',tip:'连续发射 3 枚范围炮弹'}},
   mech  :{n:'重型机甲',cost:1800,hp:900,spd:44,rng:6.0,dmg:62,rate:1.3 ,arm:'heavy',rad:13,ic:'🤖',from:'factory', t:14,
     vs:{light:1.0,heavy:1.25,str:1.3},
     sk:{n:'铁壁',ic:'🛡',cd:22,rng:0,dmg:0,rad:0,k:'shield',tip:'展开能量护盾，6 秒内受到伤害减 60%'}},
@@ -698,13 +700,13 @@ const UDEF={
 Object.assign(UDEF,{
   mortar :{n:'迫击炮兵',cost:350 ,hp:110,spd:40,rng:8.5,dmg:60 ,rate:2.4 ,arm:'light',rad:8 ,ic:'🎯',from:'barracks',t:7 ,
     vs:{light:1.3,heavy:.6,str:1.1},aoe:2.2,
-    sk:{n:'急促射击',ic:'💥',cd:16,rng:9,dmg:52,rad:2.6,k:'mortar',tip:'高抛连射 3 发，越过障碍砸向目标区'}},
+    sk:{n:'急促射击',ic:'💥',cd:16,rng:8.5,dmg:52,rad:2.6,k:'mortar',tip:'高抛连射 3 发，越过障碍砸向目标区'}},
   recon  :{n:'侦察车',cost:450 ,hp:220,spd:105,rng:3.5,dmg:12 ,rate:0.40,arm:'heavy',rad:9 ,ic:'🛵',from:'factory', t:5 ,
     vs:{light:1.2,heavy:.35,str:.3},
     sk:{n:'疾驰',ic:'⚡',cd:12,rng:0,dmg:0,rad:0,k:'sprint',tip:'6 秒内极速机动，适合穿插与撤退'}},
   assault:{n:'突击炮',cost:1200,hp:520,spd:52,rng:6.5,dmg:130,rate:2.2 ,arm:'str',rad:12,ic:'🔨',from:'factory', t:12,
     vs:{light:.5,heavy:1.1,str:2.2},
-    sk:{n:'攻坚弹',ic:'🔨',cd:20,rng:7,dmg:300,rad:0,k:'sapper',tip:'一发攻坚弹，对建筑造成毁灭伤害'}}
+    sk:{n:'攻坚弹',ic:'🔨',cd:20,rng:6.5,dmg:300,rad:0,k:'sapper',tip:'一发攻坚弹，对建筑造成毁灭伤害'}}
 });
 /* ===================== 国家专属单位（4）=====================
    需要本国 + 已建成科技中心才能生产 */
@@ -717,7 +719,9 @@ Object.assign(UDEF,{
     sk:{n:'铁幕',ic:'🛡',cd:26,rng:0,dmg:0,rad:0,k:'ironcurtain',tip:'5 秒内受到的伤害降至 15%'}},
   ninja  :{n:'忍者',    cost:500 ,hp:90 ,spd:88,rng:1.8,dmg:55 ,rate:0.8 ,arm:'light',rad:7 ,ic:'🥷',from:'barracks',t:6 ,nat:'rising',
     vs:{light:1.8,heavy:.9,str:.5},
-    sk:{n:'影袭',ic:'🗡',cd:14,rng:8,dmg:170,rad:0,k:'blink',tip:'突进到目标身边并造成重伤'}},
+    /* 影袭：忍者普攻只有 1.8 格，突进 8 格等于「隔半屏瞬移秒人」，
+       与近战定位完全冲突。收到 3.3 格（普攻 +1.5），仍是合格的切入技。 */
+    sk:{n:'影袭',ic:'🗡',cd:14,rng:3.3,dmg:170,rad:0,k:'blink',tip:'突进到目标身边并造成重伤'}},
   tesla  :{n:'磁暴炮车',cost:1700,hp:320,spd:44,rng:12 ,dmg:120,rate:3.0 ,arm:'str',rad:11,ic:'⚡',from:'factory', t:13,nat:'dune',
     vs:{light:.8,heavy:1.2,str:1.5},aoe:2.0,
     sk:{n:'磁暴链',ic:'⚡',cd:24,rng:9,dmg:70,rad:3.5,k:'chain',tip:'释放连锁电击，在多个目标间跳跃'}},
@@ -740,7 +744,7 @@ Object.assign(UDEF,{
     sk:{n:'疾袭',ic:'⚡',cd:12,rng:0,dmg:0,rad:0,k:'sprint',tip:'6 秒内极速机动，适合穿插与撤退'}},
   mlrs    :{n:'火箭炮车',cost:1400,hp:300,spd: 48,rng:9.5,dmg:38,rate:3.60,arm:'str',rad:11,ic:'🚀',from:'factory',t:12,
     vs:{light:1.2,heavy:.9,str:1.1},aoe:2.6,salvo:6,
-    sk:{n:'覆盖射击',ic:'🚀',cd:26,rng:11,dmg:44,rad:4.0,k:'barrage',tip:'连续发射 3 枚大范围火箭弹'}},
+    sk:{n:'覆盖射击',ic:'🚀',cd:26,rng:9.5,dmg:44,rad:3.2,k:'barrage',tip:'连续发射 3 枚大范围火箭弹'}},
   amphi   :{n:'两栖装甲车',cost:850,hp:360,spd:74,rng:3.4,dmg:20,rate:0.55,arm:'heavy',rad:10,ic:'🌊',from:'factory',t: 9,
     vs:{light:1.0,heavy:.6,str:.5},amphi:1,
     sk:{n:'登陆',ic:'🌊',cd:16,rng:0,dmg:0,rad:0,k:'sprint',tip:'短时加速，可从水面直接登陆突袭'}},
@@ -749,7 +753,7 @@ Object.assign(UDEF,{
     sk:{n:'攻城模式',ic:'🏰',cd:20,rng:0,dmg:0,rad:0,k:'siege',tip:'架起驻锄：6 秒射程 +50%、伤害 +60%，但无法移动'}},
   jammer  :{n:'电子战车',cost:900,hp:340,spd:60,rng:0,dmg:0,rate:0,arm:'heavy',rad:10,ic:'📡',from:'factory',t:10,
     aura:{rng:6.5,spd:.75,rngm:.65},
-    sk:{n:'电磁脉冲',ic:'📡',cd:22,rng:7,dmg:0,rad:4.0,k:'jam',tip:'释放脉冲，范围内敌人 3 秒内无法攻击'}},
+    sk:{n:'电磁脉冲',ic:'📡',cd:22,rng:5.5,dmg:0,rad:3.5,k:'jam',tip:'释放脉冲，范围内敌人 3 秒内无法攻击'}},
   engineer:{n:'工程车',  cost:700,hp:320,spd:58,rng:0,dmg:0,rate:0,arm:'heavy',rad:10,ic:'🛠',from:'factory',t: 8,
     build:{amt:26,rng:4.0,cd:1.0},
     sk:{n:'紧急施工',ic:'🧱',cd:18,rng:4,dmg:0,rad:0,k:'fortify',tip:'就地架设一段围墙，并修复周围建筑'}}
@@ -766,22 +770,24 @@ Object.assign(UDEF,{
 Object.assign(UDEF,{
   shield   :{n:'盾卫',  cost:400,hp:300,spd:44,rng:1.6,dmg:16,rate:1.0 ,arm:'light',rad: 8,ic:'🛡',from:'barracks',t:7 ,
     vs:{light:1.3,heavy:.35,str:.4},
-    sk:{n:'盾墙',ic:'🛡',cd:18,rng:4.5,dmg:0,rad:3.0,k:'bulwark',tip:'展开盾墙，范围内友军 6 秒内受伤减 40%'}},
+    sk:{n:'盾墙',ic:'🛡',cd:18,rng:3.5,dmg:0,rad:3.0,k:'bulwark',tip:'展开盾墙，范围内友军 6 秒内受伤减 40%'}},
   medicinf :{n:'战地医护',cost:400,hp:110,spd:50,rng:0,dmg:0,rate:0,arm:'light',rad: 7,ic:'⛑',from:'barracks',t:6 ,
     heal:{amt:14,rng:4.0,cd:1.1},
     sk:{n:'战地急救',ic:'⛑',cd:16,rng:4,dmg:0,rad:3.6,k:'aid',tip:'瞬间治疗范围内所有步兵并持续回复'}},
   gunner   :{n:'机枪兵',cost:500,hp:130,spd:40,rng:5.0,dmg:11,rate:0.16,arm:'light',rad: 8,ic:'🔫',from:'barracks',t:8 ,
     vs:{light:1.4,heavy:.3,str:.35},
-    sk:{n:'压制射击',ic:'🔫',cd:15,rng:6,dmg:0,rad:3.5,k:'suppress',tip:'持续扫射，范围内敌人 5 秒内移速减半'}},
+    sk:{n:'压制射击',ic:'🔫',cd:15,rng:5,dmg:0,rad:3.5,k:'suppress',tip:'持续扫射，范围内敌人 5 秒内移速减半'}},
   demo     :{n:'爆破兵',cost:600,hp:100,spd:46,rng:2.0,dmg:20,rate:1.2 ,arm:'light',rad: 7,ic:'🧨',from:'barracks',t:8 ,
     vs:{light:.5,heavy:.6,str:2.6},
-    sk:{n:'爆破包',ic:'🧨',cd:20,rng:2.5,dmg:520,rad:2.0,k:'demo',tip:'安放炸药包，对建筑造成毁灭伤害'}},
+    sk:{n:'爆破包',ic:'🧨',cd:20,rng:2.2,dmg:520,rad:2.0,k:'demo',tip:'安放炸药包，对建筑造成毁灭伤害'}},
   hound    :{n:'战犬',  cost:250,hp: 90,spd:100,rng:1.2,dmg:30,rate:0.7,arm:'light',rad: 6,ic:'🐕',from:'barracks',t:3 ,
     vs:{light:1.6,heavy:.2,str:.15},nospd:1,
-    sk:{n:'扑咬',ic:'🐕',cd:12,rng:6,dmg:90,rad:0,k:'pounce',tip:'高速扑向目标并造成重伤'}},
+    /* 扑咬：战犬是贴脸单位（普攻 1.2 格），原来能扑 6 格太离谱。
+       收到 2.7 格（普攻 +1.5），扑咬依然是补刀/切后排的好手。 */
+    sk:{n:'扑咬',ic:'🐕',cd:12,rng:2.7,dmg:90,rad:0,k:'pounce',tip:'高速扑向目标并造成重伤'}},
   disruptor:{n:'干扰兵',cost:550,hp:120,spd:44,rng:5.5,dmg:18,rate:1.1,arm:'light',rad: 7,ic:'📶',from:'barracks',t:8 ,
     vs:{light:1.0,heavy:.5,str:.4},
-    sk:{n:'干扰场',ic:'📶',cd:18,rng:7,dmg:0,rad:3.8,k:'disrupt',tip:'释放干扰场，范围内敌人 6 秒内射速减半'}},
+    sk:{n:'干扰场',ic:'📶',cd:18,rng:5.5,dmg:0,rad:3.2,k:'disrupt',tip:'释放干扰场，范围内敌人 6 秒内射速减半'}},
   bridge   :{n:'架桥车',cost:1000,hp:420,spd:52,rng:0,dmg:0,rate:0,arm:'heavy',rad:11,ic:'🌉',from:'factory',t:11,
     sk:{n:'架设桥梁',ic:'🌉',cd:24,rng:3,dmg:0,rad:0,k:'bridge',tip:'把面前的水面架成桥，为全军开辟新路线'}}
 });
@@ -814,15 +820,15 @@ Object.assign(UDEF,{
   fighter :{n:'战斗机',cost:1000,hp:260,spd:152,rng:5.5,dmg:52,rate:0.55,arm:'air',rad:9 ,ic:'✈️',from:'airfield',t:11,
     air:1,aa:1,airOnly:1,
     vs:{light:.35,heavy:.45,str:.30,air:1.7},
-    sk:{n:'空中格斗',ic:'✈️',cd:14,rng:7,dmg:170,rad:0,k:'strafe',tip:'高速掠射，对一个空中目标造成毁灭伤害'}},
+    sk:{n:'空中格斗',ic:'✈️',cd:14,rng:5.5,dmg:170,rad:0,k:'strafe',tip:'高速掠射，对一个空中目标造成毁灭伤害'}},
   bomber  :{n:'轰炸机',cost:1500,hp:400,spd: 96,rng:7.5,dmg:130,rate:3.6,arm:'air',rad:11,ic:'🛩',from:'airfield',t:14,
     air:1,gndOnly:1,aoe:3.2,
     vs:{light:1.1,heavy:1.0,str:2.6},
-    sk:{n:'地毯轰炸',ic:'💣',cd:26,rng:9,dmg:95,rad:5.0,k:'bomb',tip:'沿航线投下 5 枚炸弹，覆盖大片区域'}},
+    sk:{n:'地毯轰炸',ic:'💣',cd:26,rng:7.5,dmg:95,rad:3.4,k:'bomb',tip:'沿航线投下 5 枚炸弹，覆盖大片区域'}},
   gunship :{n:'武装直升机',cost:1200,hp:420,spd:80,rng:6.0,dmg:34,rate:0.30,arm:'air',rad:10,ic:'🚁',from:'airfield',t:12,
     air:1,aa:1,
     vs:{light:1.5,heavy:1.3,str:.8,air:1.1},
-    sk:{n:'火箭弹幕',ic:'🚁',cd:18,rng:7,dmg:60,rad:3.2,k:'rockets',tip:'倾泻火箭弹幕，范围杀伤地面与空中目标'}},
+    sk:{n:'火箭弹幕',ic:'🚁',cd:18,rng:6,dmg:60,rad:3.2,k:'rockets',tip:'倾泻火箭弹幕，范围杀伤地面与空中目标'}},
   airlift :{n:'空降运输机',cost:800,hp:480,spd:110,rng:0,dmg:0,rate:0,arm:'air',rad:10,ic:'🛫',from:'airfield',t:10,
     air:1,
     vs:{light:1,heavy:1,str:1},
@@ -830,11 +836,13 @@ Object.assign(UDEF,{
   skyeye  :{n:'空中预警机',cost:900,hp:340,spd:118,rng:0,dmg:0,rate:0,arm:'air',rad:10,ic:'📡',from:'airfield',t:10,
     air:1,aaw:1,                                  // 反隐：范围内识破间谍
     vs:{light:1,heavy:1,str:1},
-    sk:{n:'广域扫描',ic:'👁',cd:20,rng:14,dmg:0,rad:0,k:'scan',tip:'扫描大片区域，10 秒内持续显示范围内所有敌人。注意：预警机看不穿间谍伪装'}},
+    /* 广域扫描 14 → 12：12 格（384px）仍是全场最大的侦察范围，
+       但不再夸张到「一开机就扫掉小半张图」。 */
+    sk:{n:'广域扫描',ic:'👁',cd:20,rng:9,dmg:0,rad:0,k:'scan',tip:'扫描大片区域，10 秒内持续显示范围内所有敌人。注意：预警机看不穿间谍伪装'}},
   flak    :{n:'防空炮车',cost:700,hp:320,spd: 62,rng:8.0,dmg:30,rate:0.42,arm:'heavy',rad:10,ic:'🎯',from:'factory',t:8,
     aa:1,aaOnly:1,
     vs:{light:.3,heavy:.4,str:.3,air:2.3},
-    sk:{n:'防空弹幕',ic:'🎯',cd:16,rng:9,dmg:85,rad:3.0,k:'flakburst',tip:'打出防空弹幕，对范围内所有空中单位造成伤害'}}
+    sk:{n:'防空弹幕',ic:'🎯',cd:16,rng:8,dmg:85,rad:3.0,k:'flakburst',tip:'打出防空弹幕，对范围内所有空中单位造成伤害'}}
 });
 /* 单位分类：用于 AI 配比与 UI 分组 */
 /* ===================== 国家（阵营）=====================
@@ -2045,6 +2053,22 @@ class Game{
     for(const id of ids){
       const u=this.U.get(id); if(!u||u.side!==side||!u.def.sk)continue;
       if(u.skcd>0)continue;
+      /* ---- 射程夹紧（关键）----
+         以前完全不校验落点距离，点地图哪儿就打到哪儿 ——
+         等于所有技能都是「全图射程」，面板上写的 rng 只是装饰。
+         现在按「每个单位自己的技能射程」把落点夹到边缘：
+         多人同时放技能时，各自按自己的射程尽力，而不是共用第一个人的。 */
+      let tx=x, ty=y;
+      const R=(u.def.sk.rng||0)*TILE;
+      if(R>0){
+        const d=dist(u.x,u.y,x,y);
+        if(d>R&&d>0.001){tx=u.x+(x-u.x)/d*R; ty=u.y+(y-u.y)/d*R;}
+      }
+      if(this.cmdSkillOne(side,u,tx,ty))used++;
+    }
+    return used;
+  }
+  cmdSkillOne(side,u,x,y){
       const sk=u.def.sk;
       u.skcd=sk.cd; u.skt=0; u.skill=sk.k; u.skx=u.x; u.sky=u.y; u.sktx=x; u.skty=y;
       if(sk.k==='charge'){u.skt=3;}                                   // 冲锋：3秒加速
@@ -2120,16 +2144,21 @@ class Game{
         this.fx.push({x:u.x,y:u.y,t:0,life:.5,r:20,c:'#d8e8ff',k:'dust'});
       }else if(sk.k==='sapper'){
         // 攻坚弹：优先砸建筑，对建筑伤害翻倍
+        /* 只打「射程内」的建筑 —— 原来这里全图找最近敌方建筑，
+           等于隔着整张地图直接炸基地，射程形同虚设。 */
+        const SR=(sk.rng||0)*TILE;
         const t=this.pickTgtNear(u,x,y);
         const tb=this.B.get(t)||null;
         let bx=x,by=y;
-        if(!tb){                                      // 没点到单位就找最近的敌方建筑
+        if(tb&&dist(tb.x,tb.y,u.x,u.y)<=SR){bx=tb.x;by=tb.y;}
+        else{
           let bd=1e9;
           for(const b of this.builds){
             if(!isEnemy(b.side,side)||b.hp<=0)continue;
+            if(dist(b.x,b.y,u.x,u.y)>SR)continue;
             const d=dist(b.x,b.y,x,y); if(d<bd){bd=d;bx=b.x;by=b.y;}
           }
-        }else{bx=tb.x;by=tb.y;}
+        }
         this.projs.push({x:u.x,y:u.y,tx:bx,ty:by,tid:0,spd:760,dmg:sk.dmg,
           vs:{light:.4,heavy:1.0,str:3.0},side,life:1.6,col:'#ff8a3d',big:true,k:'shell',r:TILE*1.6});
       }else if(sk.k==='overclock'){
@@ -2290,9 +2319,12 @@ class Game{
       }else if(sk.k==='demo'){
         /* 爆破包：优先砸建筑，对建筑造成毁灭伤害。
            用投射物表现抛物线，落点直接结算，让「安放 → 爆炸」看得见。 */
+        /* 同攻坚弹：只在射程内找建筑，不能全图锁定。 */
+        const SR=(sk.rng||0)*TILE;
         let tb=null,bd=1e9;
         for(const b of this.builds){
           if(!isEnemy(b.side,side)||b.hp<=0)continue;
+          if(dist(b.x,b.y,u.x,u.y)>SR)continue;
           const d=dist(b.x,b.y,x,y); if(d<bd){bd=d;tb=b;}
         }
         const bx=tb?tb.x:x, by=tb?tb.y:y;
@@ -2413,7 +2445,7 @@ class Game{
         const COST=400;
         if(this.credits[side]<COST){
           if(side===MYSIDE)toast('空投需要 400 资金');
-          continue;
+          return false;                    // 钱不够：技能不进入冷却
         }
         const gx=clamp(x,20,WW-20), gy=clamp(y,20,WH-20);
         const tx2=clamp((gx/TILE)|0,1,MW-2), ty2=clamp((gy/TILE)|0,1,MH-2);
@@ -2484,9 +2516,8 @@ class Game{
         }
       }
       beep(sk.k==='grenade'?240:sk.k==='salvo'?520:sk.k==='smoke'?300:700,.16,'sawtooth',.05);
-      used++;
-    }
-    return used;
+    return true;
+
   }
   pickTgtNear(u,x,y){
     let best=null,bd=3*TILE;
@@ -2619,6 +2650,25 @@ class Game{
     /* 停电计时器：间谍潜入电厂后，这一方几乎全面停产。
        数组同样必须跟着 NP 走，否则多方对局里 bo[2] 是 undefined → NaN 比较。 */
     if(!this.bo||this.bo.length!==NP)this.bo=new Array(NP).fill(0);
+  }
+  /* 生产加速：同一类生产建筑（兵营 / 战车工厂 / 机场）建得越多，生产越快。
+     收益递减：第 2 座 +0.35、第 3 座 +0.28、第 4 座 +0.22（每座打八折），
+     上限 ×2.2 —— 否则堆 10 座兵营就变成瞬间暴兵，经济完全失衡。
+     实测：1 座 1.00× / 2 座 1.35× / 3 座 1.63× / 4 座 1.84× / 5 座 2.02× */
+  prodF(side,btype){
+    const key=side+':'+btype;
+    if(this._psCache&&this._psCache[key]!==undefined)return this._psCache[key];
+    let n=0;
+    for(const b of this.builds){
+      /* 只算「已建成」的：正在建造中的工厂不该提前给加速 */
+      if(b.side===side&&b.built&&b.type===btype)n++;
+    }
+    let sp=1,step=0.35;
+    for(let i=1;i<n;i++){sp+=step;step*=0.8;}
+    if(sp>2.2)sp=2.2;
+    if(!this._psCache)this._psCache={};
+    this._psCache[key]=sp;
+    return sp;
   }
   powerF(side){ const u=this.puse[side]; if(!u)return this.bo&&this.bo[side]>0?0.05:1;
     const g=this.pgen[side];
@@ -2867,6 +2917,7 @@ class Game{
        写死两项的话，pf[2] 是 undefined → j.t += dt*undefined = NaN
        → 方 2 以后的生产进度永远是 NaN，队列卡死不再出货。 */
     const pf=[];for(let s=0;s<(this.NP||2);s++)pf.push(this.powerF(s));
+    this._psCache=null;                            // 生产加速缓存：每帧重算（建筑可能被摧毁/建成）
     for(const b of this.builds)this.updB(b,dt,pf[b.side]!==undefined?pf[b.side]:1);
     this.updAuras(dt);                            // 电子战车光环（0.5 秒一次）
     this.updHospital(dt);                         // 野战医院：范围治疗步兵
@@ -3138,7 +3189,9 @@ class Game{
       return;
     }
     if(b.q.length){
-      const j=b.q[0]; j.t+=dt*pf;
+      /* 生产速度 = 电力系数 × 同类建筑数量加成 */
+      const ps=this.prodF(b.side,b.type);
+      const j=b.q[0]; j.t+=dt*pf*ps;
       if(j.t>=j.total){
         b.q.shift();
         const u=this.spawn(b.side,j.type,b.bx,b.by,1,true);                  // 出厂单位避开已有单位
@@ -3591,6 +3644,11 @@ class Game{
       else if(!cnt('depot')&&this.time>80)want='depot';                  // 补给仓库（经济）
       else if(!cnt('radar')&&this.time>110)want='radar';                 // 雷达站（情报）
       else if(cnt('factory')<2&&this.time>240)want='factory';
+      /* 生产加速：同类建筑越多出兵越快，所以中后期钱多时要扩建。
+         以前 AI 永远只造 1 座兵营，出兵速度被死死卡住。 */
+      else if(cnt('barracks')<2&&this.time>200&&this.credits[s]>1600)want='barracks';
+      else if(cnt('factory')<3&&this.time>420&&this.credits[s]>2600)want='factory';
+      else if(cnt('airfield')<2&&this.time>520&&this.credits[s]>3000)want='airfield';
       else if(!cnt('repair')&&this.time>100)want='repair';               // 维修厂（受伤部队回血）
       else if(!cnt('tech')&&this.time>150)want='tech';                   // 科技中心解锁升级
       else if(!cnt('hospital')&&this.time>200)want='hospital';           // 野战医院（持久战）
@@ -8094,6 +8152,25 @@ function render(){
       ctx.globalAlpha=1;
     }
   }
+  /* 技能瞄准时画出真实射程圈。
+     落点会被夹到射程边缘，看不到圈的话玩家会以为「技能没打中」，
+     也就无从判断到底能打多远。 */
+  if(RV&&sel&&sel.size&&(typeof skTarget!=='undefined')&&skTarget&&skTarget.def){
+    const SR0=(skTarget.def.rng||0)*TILE;
+    if(SR0>0){
+      for(const id of sel){
+        const u=RV.U.get(id); if(!u||!u.def.sk||u.def.sk.k!==skTarget.k)continue;
+        if(u.skcd>0)continue;
+        ctx.globalAlpha=.55;ctx.strokeStyle='#ffd45e';ctx.lineWidth=1.6;
+        ctx.setLineDash([7,5]);
+        ctx.beginPath();ctx.arc(u.x,u.y,SR0,0,6.2832);ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha=.09;ctx.fillStyle='#ffd45e';
+        ctx.beginPath();ctx.arc(u.x,u.y,SR0,0,6.2832);ctx.fill();
+      }
+      ctx.globalAlpha=1;
+    }
+  }
   ctx.restore();
   // 框选
   if(box.on){
@@ -8892,7 +8969,7 @@ for(const ev of ['click','pointerup','touchend']){
 }
 
 /* ===================== 版本（用于确认浏览器加载的是最新文件） ===================== */
-const BUILD='v6p2';
+const BUILD='v6p5';
 function showBuild(){
   for(const id of ['buildTag','buildTag2']){
     const t=$(id); if(t)t.textContent='构建 '+BUILD;
@@ -9282,7 +9359,11 @@ function renderPanel(){
       /* 同类建筑编号：有多座兵营时能分清是哪一座，避免「以为点的是 A 其实下了 B」 */
       const same=myBuilds().filter(x=>x.type===b.type);
       const idx=same.length>1?(same.indexOf(b)+1):0;
-      h+=`<div class="card"><h4>${b.def.ic} ${b.def.n}${idx?' <small style="color:#7fd6ff">#'+idx+'</small>':''}</h4>`;
+      /* 同类建筑加速：显示实际倍率，否则玩家不知道多造一座有什么用 */
+      const spdN=myBuilds().filter(x=>x.type===b.type).length;
+      const spdM=(RV.prodF&&spdN>1)?RV.prodF(MYSIDE,b.type):1;
+      const spdTag=spdN>1?` <small style="color:#7cf59a">⚡×${spdM.toFixed(2)}（${spdN} 座）</small>`:'';
+      h+=`<div class="card"><h4>${b.def.ic} ${b.def.n}${idx?' <small style="color:#7fd6ff">#'+idx+'</small>':''}${spdTag}</h4>`;
       h+=prodNowHTML(b,j,pct);                       // 「正在生产什么」：单行固定高度，不推动按钮
       h+=`<div class="bar"><i data-bar="${b.id}" style="width:${pct}%"></i></div>`;
       h+='<div class="grid">';
